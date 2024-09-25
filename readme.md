@@ -2,6 +2,8 @@
 
 Thank you for stopping by this project! I am fairly new to Unity, and I am seeking help developing this tool further. If you want to help develop this, please stop by the [United Programming](https://discord.gg/invite/unitedprogramming) discord server.
 
+![Screenshot](screenshot.png)
+
 ## Project goals:
 
 * Create a reusable map engine that can generate these kinds of maps.
