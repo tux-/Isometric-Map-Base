@@ -26,13 +26,18 @@ public class IsoTilesEditor : Editor
 		}
 
 		toolbarInt = GUILayout.Toolbar(toolbarInt, toolbarStrings);
+		if (toolbarInt > 0) {
+			Tools.hidden = true;
+		}
+		else {
+			Tools.hidden = false;
+		}
 	}
 
 	private void OnEnable ()
 	{
 		terrain = (IsoTiles) target;
 		Undo.undoRedoPerformed += OnUndoRedo;
-		Tools.hidden = true;
 	}
 
 	private void OnDisable ()
