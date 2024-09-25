@@ -6,7 +6,7 @@ Thank you for stopping by this project! I am fairly new to Unity, and I am seeki
 
 ## Project goals:
 
-* Create a reusable map engine that can generate these kinds of maps.
+* Create a reusable map engine that can generate this kind of map.
 * Should be easy to use with any renderer, but created with URP.
 * Should work with future versions of Unity.
 * Ready methods that the game might need to hook into the map, like modifying the terrain in real time.

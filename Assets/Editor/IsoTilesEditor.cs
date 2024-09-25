@@ -9,6 +9,8 @@ public class IsoTilesEditor : Editor
 
 	IsoTiles terrain;
 
+	private int nearest_idx = -1;
+
 	public override void OnInspectorGUI ()
 	{
 		EditorGUILayout.LabelField("Level", "Terrain");
@@ -29,12 +31,19 @@ public class IsoTilesEditor : Editor
 	private void OnEnable ()
 	{
 		terrain = (IsoTiles) target;
+		Undo.undoRedoPerformed += OnUndoRedo;
 		Tools.hidden = true;
 	}
 
 	private void OnDisable ()
 	{
+		Undo.undoRedoPerformed -= OnUndoRedo;
 		Tools.hidden = false;
+	}
+
+	private void OnUndoRedo ()
+	{
+		terrain.UpdadeVisuals();
 	}
 
 	private void OnSceneGUI ()
@@ -43,26 +52,29 @@ public class IsoTilesEditor : Editor
 		if (toolbarInt > 0) {
 
 			Event guiEvent = Event.current;
-			Ray mouseRay = HandleUtility.GUIPointToWorldRay(guiEvent.mousePosition);
+			if (guiEvent.type == EventType.MouseMove) {
+				Ray mouseRay = HandleUtility.GUIPointToWorldRay(guiEvent.mousePosition);
 
-			int nearest_idx = -1;
-			float nearest_dist = float.PositiveInfinity;
-			float d1 = 0, d2 = 0;
-			for (int i = 0; i < terrain.vertices.Length; ++i) {
-				d1 = Vector3.Distance(terrain.vertices[i], mouseRay.origin) / 2f;
-				d2 = Vector3.Cross(mouseRay.direction, terrain.vertices[i] - mouseRay.origin).magnitude;
+				nearest_idx = -1;
+				float nearest_dist = float.PositiveInfinity;
+				float d1 = 0, d2 = 0;
+				for (int i = 0; i < terrain.vertices.Length; ++i) {
+					d1 = Vector3.Distance(terrain.vertices[i], mouseRay.origin) / 2f;
+					d2 = Vector3.Cross(mouseRay.direction, terrain.vertices[i] - mouseRay.origin).magnitude;
 
-				float di = d1 + d2;
+					float di = d1 + d2;
 
-				if (di < nearest_dist) {
-					nearest_idx = i;
-					nearest_dist = di;
+					if (di < nearest_dist) {
+						nearest_idx = i;
+						nearest_dist = di;
+					}
 				}
-			}
 
+			}
 			Handles.SphereHandleCap(0, terrain.vertices[nearest_idx], Quaternion.LookRotation(Vector3.right), 0.15f, EventType.Repaint);
 
-			if ((guiEvent.type == EventType.MouseDown) && (guiEvent.button == 0)) {
+			if ((guiEvent.type == EventType.MouseDown) && (guiEvent.button == 0) && (guiEvent.modifiers == EventModifiers.None)) {
+				Undo.RecordObject(terrain, "Modify terrain height");
 				if (toolbarInt == 1) {
 					terrain.Raise(nearest_idx);
 				}
