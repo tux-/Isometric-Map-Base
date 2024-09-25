@@ -139,21 +139,6 @@ public class IsoTiles : MonoBehaviour
 		mapVertHeight = new int[tileCount * 6];
 		for (int _z = 0, i = 0, index = 0; _z < z; _z++) {
 			for (int _x = 0; _x < x; _x++, index++, i += 6) {
-				// vertices[i] = new Vector3(_x, heightmap[index], _z);
-				// vertices[i + 1] = new Vector3(_x, heightmap[index + x + 1], _z + 1);
-				// vertices[i + 2] = new Vector3(_x + 1, heightmap[index + x + 2], _z + 1);
-
-				// vertices[i + 3] = new Vector3(_x + 1, heightmap[index + x + 2], _z + 1);
-				// vertices[i + 4] = new Vector3(_x + 1, heightmap[index + 1], _z);
-				// vertices[i + 5] = new Vector3(_x, heightmap[index], _z);
-
-				// triangles[i] = i;
-				// triangles[i + 1] = i + 1;
-				// triangles[i + 2] = i + 2;
-
-				// triangles[i + 3] = i + 3;
-				// triangles[i + 4] = i + 4;
-				// triangles[i + 5] = i + 5;
 				vertices[i] = new Vector3(_x, heightmap[index], _z);
 				mapVertHeight[i] = index;
 				vertices[i + 1] = new Vector3(_x, heightmap[index + x + 1], _z + 1);
